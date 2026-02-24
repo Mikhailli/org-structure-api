@@ -41,6 +41,7 @@ docker-compose down -v
 .
 ├── cmd/
 │   └── api/
+│       ├── migrations/       # Миграции
 │       └── main.go           # Точка входа
 ├── internal/
 │   ├── config/               # Конфигурация
@@ -50,9 +51,11 @@ docker-compose down -v
 │   ├── middleware/           # HTTP middleware
 │   ├── repository/           # Слой работы с БД
 │   └── service/              # Бизнес-логика
-├── migrations/               # SQL миграции (Goose)
-├── Dockerfile
+├── .gitignore
 ├── docker-compose.yml
+├── Dockerfile
+├── go.mod
+├── go.sum
 └── README.md
 ```
 
@@ -77,7 +80,7 @@ GET /departments/{id}?depth=2&include_employees=true
 ```
 
 Query параметры:
-- `depth` (int, default: 1, max: 5) — глубина вложенных подразделений
+- `depth` (int, default: 1) — глубина вложенных подразделений
 - `include_employees` (bool, default: true) — включать сотрудников
 
 #### Обновить подразделение
@@ -172,19 +175,6 @@ curl -X DELETE "http://localhost:8080/departments/3?mode=reassign&reassign_to_de
 4. **Каскадное удаление** — при удалении подразделения удаляются все дочерние и сотрудники
 
 ## Разработка
-
-### Локальный запуск
-
-```bash
-# Запустить PostgreSQL
-docker-compose up -d postgres
-
-# Установить зависимости
-go mod download
-
-# Запустить приложение
-DB_HOST=localhost go run ./cmd/api
-```
 
 ### Запуск тестов
 
